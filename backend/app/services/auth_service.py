@@ -54,12 +54,19 @@ class AuthService:
         This method is thread-safe and will cache tokens to avoid
         unnecessary authentication requests.
 
+        If override_token is set in settings (via --token argument),
+        it will be used directly (for development/testing purposes).
+
         Returns:
             Valid access token string
 
         Raises:
             AuthenticationError: If authentication fails
         """
+        # Check for override token first (development mode)
+        if self.settings.override_token:
+            return self.settings.override_token
+
         async with self._lock:
             if self._is_token_expired():
                 await self._refresh_token()

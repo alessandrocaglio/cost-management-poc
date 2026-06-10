@@ -1,0 +1,347 @@
+/**
+ * Cost Management Redux - Styles
+ * Dual-theme system using CSS custom properties
+ */
+
+/* ============================================
+   RED HAT THEME (Primary)
+   ============================================ */
+body.theme-redhat {
+    --primary-color: #EE0000;
+    --primary-dark: #CC0000;
+    --primary-light: #FF3333;
+
+    --bg-main: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-header: #151515;
+    --bg-hover: #F5F5F5;
+
+    --text-primary: #151515;
+    --text-secondary: #666666;
+    --text-on-dark: #FFFFFF;
+
+    --border-color: #DDDDDD;
+    --border-dark: #333333;
+
+    --accent-color: #0066CC;
+    --accent-dark: #004080;
+
+    --success-color: #3E8635;
+    --warning-color: #F0AB00;
+    --error-color: #C9190B;
+
+    --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================
+   ALTERNATIVE THEME (PTSB-Inspired)
+   ============================================ */
+body.theme-alternative {
+    --primary-color: #FF5C28;
+    --primary-dark: #E54820;
+    --primary-light: #FF7A50;
+
+    --bg-main: #F5E6E0;
+    --bg-card: #FFFFFF;
+    --bg-header: #0D2626;
+    --bg-hover: #FFE8DD;
+
+    --text-primary: #1A3C3C;
+    --text-secondary: #4A6363;
+    --text-on-dark: #F5E6E0;
+
+    --border-color: #D4C4BE;
+    --border-dark: #2D4F4F;
+
+    --accent-color: #1A3C3C;
+    --accent-dark: #0D2626;
+
+    --success-color: #2D8659;
+    --warning-color: #FF8C42;
+    --error-color: #D64545;
+
+    --shadow: 0 2px 4px rgba(26, 60, 60, 0.1);
+    --shadow-lg: 0 4px 12px rgba(26, 60, 60, 0.15);
+}
+
+/* ============================================
+   GLOBAL STYLES
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Vue cloak directive */
+[v-cloak] {
+    display: none;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.header-bg {
+    background-color: var(--bg-header);
+    color: var(--text-on-dark);
+    transition: background-color 0.3s ease;
+}
+
+.header-bg h1 {
+    color: var(--text-on-dark);
+}
+
+.header-bg .text-primary {
+    color: var(--text-on-dark) !important;
+}
+
+.header-bg .text-secondary {
+    color: var(--text-on-dark);
+    opacity: 0.8;
+}
+
+/* ============================================
+   CARDS
+   ============================================ */
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+/* ============================================
+   FORM INPUTS
+   ============================================ */
+.input-field {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+}
+
+.input-field:hover {
+    border-color: var(--primary-color);
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(var(--primary-color), 0.1);
+}
+
+.input-field:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.btn-secondary {
+    background-color: var(--bg-main);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+}
+
+.btn-secondary:active {
+    transform: scale(0.98);
+}
+
+/* ============================================
+   TABLES
+   ============================================ */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table-header {
+    background-color: var(--bg-hover);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.table-header th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+}
+
+.table-row {
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s ease;
+}
+
+.table-row:hover {
+    background-color: var(--bg-hover);
+}
+
+.table-row td {
+    color: var(--text-primary);
+}
+
+/* ============================================
+   COLOR UTILITIES
+   ============================================ */
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.text-secondary {
+    color: var(--text-secondary) !important;
+}
+
+.text-accent {
+    color: var(--accent-color) !important;
+}
+
+.text-success {
+    color: var(--success-color) !important;
+}
+
+.text-warning {
+    color: var(--warning-color) !important;
+}
+
+.text-error {
+    color: var(--error-color) !important;
+}
+
+/* ============================================
+   MODAL
+   ============================================ */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-content {
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 800px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   LOADING SPINNER
+   ============================================ */
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.border-primary {
+    border-color: var(--primary-color);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .table-row td,
+    .table-header th {
+        padding: 0.75rem;
+        font-size: 0.875rem;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    header .flex {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+/* ============================================
+   SMOOTH TRANSITIONS
+   ============================================ */
+* {
+    transition-property: background-color, border-color, color;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+}
+
+button,
+a,
+input,
+select {
+    transition-property: all;
+    transition-duration: 0.2s;
+}

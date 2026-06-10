@@ -1,0 +1,665 @@
+{
+  "meta": {
+    "count": 108,
+    "limit": 108,
+    "offset": 0,
+    "enabled_tags_count": 200,
+    "enabled_tags_limit": 200
+  },
+  "links": {
+    "first": "/api/cost-management/v1/settings/tags/?filter%5Benabled%5D=true&filter%5Bsource_type%5D=OCP&limit=108&offset=0",
+    "next": null,
+    "previous": null,
+    "last": "/api/cost-management/v1/settings/tags/?filter%5Benabled%5D=true&filter%5Bsource_type%5D=OCP&limit=108&offset=0"
+  },
+  "data": [
+    {
+      "uuid": "076857f6-ad86-483a-a738-c52ea8ff3cd5",
+      "key": "cluster_open_cluster_management_io_managed_cluster",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "10aa53b4-fb76-441e-a229-36a8c228e0cc",
+      "key": "ingresscontroller_operator_openshift_io_deployment_ingresscontroller",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "118fedae-19ea-415c-a527-fe791cd32076",
+      "key": "controller_tools_k8s_io",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "119017e0-7870-4c2f-be0a-3cd0b9b551c4",
+      "key": "apps",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "146d0c75-4acd-4efa-bb5f-269c2cb362b9",
+      "key": "pod_security_kubernetes_io_warn",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "14dd3044-99a5-4b3c-a5f6-1f52c3605d69",
+      "key": "team",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "1c2e025b-e285-4801-9af1-db16c61ed548",
+      "key": "baremetal_openshift_io_cluster_baremetal_operator",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "1e627460-eba4-4e5f-87a3-0cf48da62852",
+      "key": "operator_prometheus_io_shard",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "1e6311c4-8f69-4c15-8978-282101412f7d",
+      "key": "olm_catalog_source",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "1e67e645-c458-4b15-b4b5-b478a1dcee22",
+      "key": "dex_config_changed",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "1eb43f05-2416-4446-8e34-ab5a9a6af281",
+      "key": "agentinstalladmission",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "1ee025ed-a7e0-4592-8a8a-2378960c6017",
+      "key": "game",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "1f49e286-d116-4f2b-8989-6ef96beefcdb",
+      "key": "oauth_apiserver_anti_affinity",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "26d12374-6c5f-4909-b678-59b2d5ee379e",
+      "key": "sticazzi",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "2867bbb9-afe4-40e0-85fa-47bd41856861",
+      "key": "app_kubernetes_io_part_of",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "29bccfb0-216f-4cb5-b09f-42f9fa61a598",
+      "key": "kubernetes_io_metadata_name",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "2d628e58-ef5f-4b3e-ab7d-764f60b77aff",
+      "key": "node_role_kubernetes_io",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "2e45a56a-670a-4523-b773-218c28af3f46",
+      "key": "api",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "2fc565a7-4774-4039-8ae1-087f2d26551f",
+      "key": "aadpodidbinding",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "31629b76-de29-4008-a555-ebc70cc34919",
+      "key": "cost_center",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "346a74d9-095a-4493-a751-711a0489d055",
+      "key": "topology_kubernetes_io_region",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "39117186-2d94-4ca4-aa4e-53d28d8587a5",
+      "key": "action",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "3cd5463e-6ea5-4136-a77b-9ea1da6bd380",
+      "key": "vendor",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "3dc6245d-c57f-4822-90db-f316fc301be7",
+      "key": "operator_prometheus_io_name",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "3e42351b-70c6-4322-85a2-84e28c4cea05",
+      "key": "insights_cost_management_optimizations",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "3f1f0ca9-13e5-4bb7-afd2-3a0bd4b479bf",
+      "key": "olm_pod_spec_hash",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "42e32545-f999-403b-9808-6a2f300a6b62",
+      "key": "oauth_openshift_anti_affinity",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "45600dfc-946c-4d3a-8b94-c2c0e97778ec",
+      "key": "network_openshift_io_policy_group",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "46b5d0b6-5ee3-4051-89ea-87d0965aec3e",
+      "key": "revision",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "46d3c2c0-63d1-4b9d-bd7e-af27643714d2",
+      "key": "pod_template_generation",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "4fb97619-dd29-48b0-a16d-4a3b6496c693",
+      "key": "active_mqartemis",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "5138c72e-82d2-498c-84d8-5bfe972b45ca",
+      "key": "service_ca",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "529aca71-b0d5-4708-851a-bf82754e54e9",
+      "key": "app_kubernetes_io_name",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "54000fd7-1dff-40be-bf22-b326717590d6",
+      "key": "kubernetes_io_hostname",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "544ab237-36e8-47f2-b873-138dc330fa6b",
+      "key": "admission_policy_azure_com_ignore",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "54f0da18-1222-4342-88af-b18e8744ba32",
+      "key": "apiserver",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "5ab82cc8-f57f-4efe-a766-9061738973f2",
+      "key": "chart",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "5bb8481a-fee5-4724-964c-d6cae91b3533",
+      "key": "type",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "5e25a8cb-afc4-406e-810f-09d14a30b868",
+      "key": "etcd",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "5e9b59b6-016f-4c5e-be03-510d86c1c012",
+      "key": "component",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "60f5b212-7831-40ea-b61b-50f52102e5b5",
+      "key": "scheduler",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "61cb5328-f5c3-4f54-8c89-b882ae36729c",
+      "key": "admission_gatekeeper_sh_ignore",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "62f4f733-c542-4c42-854c-1761f86f7ac0",
+      "key": "addon_open_cluster_management_io_namespace",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "695c82c7-7e42-47ab-a8d6-d72db41841b6",
+      "key": "openshift_io_component",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "699f8a5b-fd3d-4508-9341-2c1f47268821",
+      "key": "heritage",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "6b1cf25f-7c24-4b6c-9942-bcad6c779eca",
+      "key": "openshift_io_scc",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "70030df0-f8e3-4212-b3bb-56c8cb935b45",
+      "key": "kubernetes_io_arch",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "7176738a-5b1f-4b78-b060-29ab42009769",
+      "key": "catalogsource_operators_coreos_com_update",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "720e9262-3bde-4b85-8ee6-c2c3c9b5e51e",
+      "key": "controller_manager",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "72b7ad17-5acb-4ac9-9c40-06afd226dd21",
+      "key": "env",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "770bc11a-c99b-4e05-8839-d3103b09531d",
+      "key": "ocm_antiaffinity_selector",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "79ba645f-5eec-4045-9edf-98b4f316ac37",
+      "key": "statefulset_kubernetes_io_pod_name",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "7c49ec45-22ec-4cf6-942a-eab594c033fc",
+      "key": "capk_cluster_x_k8s_io_kubevirt_machine_namespace",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "7d81f24a-ccfa-4bd2-b497-3ecdcb2a037f",
+      "key": "agent_k8s_elastic_co_name",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "7da7eb5d-5337-4d49-ae3f-e012ed7bf668",
+      "key": "release",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "8166b1c4-be81-47af-be40-9103faecc76e",
+      "key": "controller_uid",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "834c410a-bf08-4c40-bf3b-b3e4cc30a5e2",
+      "key": "owner",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "83c95e42-8328-4bb7-9fc1-32b475409922",
+      "key": "app_kubernetes_io_instance",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "8481a67d-2fb1-4fe8-8845-39b8731f9d87",
+      "key": "cluster_open_cluster_management_io_clusterset",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "851955a7-1c31-41aa-acff-7c1366a8ecb0",
+      "key": "ingresscontroller_operator_openshift_io_hash",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "8c5e2869-1f3a-4dbe-8f51-0690d6010039",
+      "key": "name",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "8f39012d-272f-46fa-8689-841719f45ce2",
+      "key": "kubernetes_io_os",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "8f45274d-be0f-4c72-b03d-ae789bb0ee46",
+      "key": "cluster_x_k8s_io_cluster_name",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "907c163c-c3fc-4f7d-bfde-118d60ac592c",
+      "key": "hive_openshift_io_target_namespace",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "98fad585-4a31-49a9-b9ff-11a929c27a66",
+      "key": "prometheus",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "99ac7627-a805-4b0c-850b-023214dedb9a",
+      "key": "kube_controller_manager",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "9ad4bd5d-a154-4f08-ba7d-4d7175311a2f",
+      "key": "addon_open_cluster_management_io_hosted_manifest_location",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "9b04db05-2ff9-43ea-8b27-974299506bab",
+      "key": "application",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "9d1d283f-c83a-444c-bd55-9d16319df3fc",
+      "key": "costcenter",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "9edfbb05-4316-4829-a016-1f721e5cdedf",
+      "key": "app_kubernetes_io_version",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "9f9db593-cc46-427a-b67d-cf2b70815851",
+      "key": "capk_cluster_x_k8s_io_kubevirt_machine_name",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "a07ec248-5ae5-42ea-8b18-2b6ac957cd21",
+      "key": "openshift_apiserver_anti_affinity",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "a19b1cfc-60bd-4156-b6f8-d9086f5825ab",
+      "key": "tenant",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "a1bf2777-2aef-42e6-9be7-beea4cc751f8",
+      "key": "ingresscanary_operator_openshift_io_daemonset_ingresscanary",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "a4ea8e99-9e03-4dc9-b60f-d5c70bc27906",
+      "key": "ccenter",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "a629f437-5119-488e-afe6-670670b2a28a",
+      "key": "cluster_name",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "a85b8c1e-9911-4951-aaf5-92c593332ed9",
+      "key": "openshift_app",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "abb12414-bddb-4b6c-913c-2340ec2b93ae",
+      "key": "addon_agent",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "aefa7e3d-8486-4c91-b3ae-24d2556f68cf",
+      "key": "helm_sh_chart",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "b09a415d-41c3-4f54-b3e1-e88a381e2ee0",
+      "key": "pod_template_hash",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "b12c3392-c12c-4df2-b13f-17a37f3a8e32",
+      "key": "pod_security_kubernetes_io_audit",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "b1b83462-5679-4ac2-b3f9-0a05fdec130d",
+      "key": "docker_registry",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "b2481813-4a01-4cd8-8600-e02dfd3481f3",
+      "key": "node_openshift_io_os_id",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "b426e662-a2a2-4b4c-84fc-9b4e6b8a8c76",
+      "key": "pod_security_kubernetes_io_enforce",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "c1e79989-9529-4b0f-a7e1-54191590ad30",
+      "key": "beta_kubernetes_io_instance_type",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "c41d3be8-1551-4c13-8da1-94fc75fc809b",
+      "key": "failure_domain_beta_kubernetes_io_zone",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "c7bc0f72-29fa-471a-9fa7-203d7e66f5dd",
+      "key": "topology_disk_csi_azure_com_zone",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "c8aa5fb7-94c9-40a5-9bf7-94cd38a7a967",
+      "key": "cluster",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "c917038b-86bc-46df-bf31-8dd52541366d",
+      "key": "app_kubernetes_io_managed_by",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "cce811f3-eeb4-4fed-816a-2ca5703bc81a",
+      "key": "namespace",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "d07a981d-5463-459e-9157-8a3d67fa8e62",
+      "key": "app_kubernetes_io_component",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "d2aaa787-b0d0-45d4-810a-355db6c8876e",
+      "key": "alertmanager",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "d87492b1-3f3b-4db1-a32a-684dedc417ba",
+      "key": "controller_revision_hash",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "d98bec50-5ec6-4e8f-a0d4-125155841759",
+      "key": "hiveadmission",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "dacb6be5-4117-4676-8a03-885e8201f2fe",
+      "key": "job_name",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "dcd8e70c-a858-4965-9a2d-ba2d96e35056",
+      "key": "dns_operator_openshift_io_daemonset_dns",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "dcdb490b-8d64-4991-80e4-792fc7f266df",
+      "key": "ovn_db_pod",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "e2d88c3f-1e43-48fd-989e-9524bc83c58d",
+      "key": "app",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "e813b1a9-ef27-49c3-a0b7-5217f5f3268d",
+      "key": "topology_kubernetes_io_zone",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "e8c9600d-33cf-43d0-97bc-e9acba3fe5ac",
+      "key": "openshift_io_run_level",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "ebe06a26-8825-4f68-bdb4-9000b98f6745",
+      "key": "beta_kubernetes_io_arch",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "ec57815e-1921-4441-84bb-4b07cdda4674",
+      "key": "failure_domain_beta_kubernetes_io_region",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "ecfda18c-920e-48fb-ae26-94e89fcd42ed",
+      "key": "openshift_io_cluster_monitoring",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "ef4b2561-c2ea-465c-80b9-9cbcbf2825df",
+      "key": "node_kubernetes_io_instance_type",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "f2b99e25-a9dd-4fdb-8ca9-13c9c0c6e943",
+      "key": "partenaire",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "f66070ba-5280-422a-92d2-ac56f19834ec",
+      "key": "k8s_app",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "f7c222d8-acb6-4438-8c26-4e6a1b684822",
+      "key": "control_plane",
+      "enabled": true,
+      "source_type": "OCP"
+    },
+    {
+      "uuid": "fc911bf0-b159-4245-8ce2-66759d6dcccb",
+      "key": "beta_kubernetes_io_os",
+      "enabled": true,
+      "source_type": "OCP"
+    }
+  ]
+}

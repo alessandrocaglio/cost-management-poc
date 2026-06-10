@@ -7,6 +7,7 @@ cost data, tag information, and resource details for OpenShift clusters.
 
 import hashlib
 import json
+import logging
 import time
 from typing import Any, Optional
 import asyncio
@@ -15,6 +16,8 @@ import httpx
 
 from app.config import Settings
 from app.services.auth_service import AuthService
+
+logger = logging.getLogger(__name__)
 
 
 class CostAPIError(Exception):
@@ -50,23 +53,62 @@ class CostAPIClient:
         """
         Get all available tag keys from OpenShift clusters.
 
-        Returns list of tag keys like ["owner", "team", "env", "project"].
+        Tries /settings/tags/ (fast, returns enabled tags) first, then falls
+        back to /tags/openshift/ (slower, comprehensive list).
 
-        Reference: GET /api/cost-management/v1/tags/openshift/
+        Reference:
+          GET /api/cost-management/v1/settings/tags/?filter[enabled]=true&filter[source_type]=OCP
+          GET /api/cost-management/v1/tags/openshift/
 
         Returns:
             List of available tag key strings
 
         Raises:
-            CostAPIError: If the API request fails
+            CostAPIError: If both endpoints fail
+        """
+        # Primary: settings/tags — enabled OCP tags, typically much faster
+        try:
+            tag_keys = await self._get_enabled_tag_keys()
+            if tag_keys:
+                logger.info("Tag keys retrieved via settings/tags: %s", tag_keys)
+                return tag_keys
+            logger.info("settings/tags returned empty list, falling back to tags/openshift/")
+        except Exception as e:
+            logger.warning("settings/tags failed (%s), falling back to tags/openshift/", e)
+
+        # Fallback: /tags/openshift/ (slow but comprehensive)
+        return await self._get_tag_keys_from_openshift()
+
+    async def _get_enabled_tag_keys(self) -> list[str]:
+        """
+        Fetch enabled OCP tag keys from /settings/tags/.
+
+        Response format: {"data": [{"key": "owner", "enabled": true, ...}, ...]}
+        """
+        endpoint = "/settings/tags/"
+        params = {"filter[enabled]": "true", "filter[source_type]": "OCP", "limit": 1000}
+
+        data = await self._request(endpoint, params)
+
+        tag_keys = []
+        for item in data.get("data", []):
+            key = item.get("key")
+            if key:
+                tag_keys.append(key)
+
+        return sorted(tag_keys)
+
+    async def _get_tag_keys_from_openshift(self) -> list[str]:
+        """
+        Fetch tag keys from /tags/openshift/ (slow fallback).
+
+        Response format: {"data": [{"key": "owner", "values": [...]}, ...]}
         """
         endpoint = "/tags/openshift/"
         params = {"limit": 1000}
 
         data = await self._request(endpoint, params)
 
-        # Extract tag keys from response
-        # Response format: {"data": [{"key": "owner", "values": [...]}, ...]}
         tag_keys = []
         for item in data.get("data", []):
             key = item.get("key")
@@ -316,13 +358,25 @@ class CostAPIClient:
             # Get authentication token
             token = await self.auth_service.get_token()
 
+            # Build and log the equivalent curl command for easy manual reproduction
+            param_str = "&".join(f"{k}={v}" for k, v in params.items())
+            full_url = f"{url}?{param_str}" if param_str else url
+            logger.info("API REQUEST: GET %s", full_url)
+            logger.info(
+                "CURL EQUIVALENT: curl -s -g -X GET '%s' -H \"Authorization: Bearer $COST_TOKEN\"",
+                full_url
+            )
+
             # Make request
             headers = {"Authorization": f"Bearer {token}"}
             response = await self.client.get(url, params=params, headers=headers)
 
+            logger.info("API RESPONSE: status=%s url=%s", response.status_code, response.url)
+
             # Check for errors
             if response.status_code != 200:
-                error_detail = response.text[:200]
+                error_detail = response.text[:500]
+                logger.error("API ERROR body: %s", error_detail)
                 raise CostAPIError(
                     f"API request failed with status {response.status_code}: {error_detail}"
                 )
@@ -335,9 +389,16 @@ class CostAPIClient:
 
             return data
 
+        except httpx.TimeoutException as e:
+            logger.error("API TIMEOUT: %s %s", url, e)
+            raise CostAPIError(f"Request timed out after {self.client.timeout.read}s: {url}")
         except httpx.HTTPError as e:
+            logger.error("API HTTP ERROR: %s %s", url, e)
             raise CostAPIError(f"HTTP error during API request: {e}")
+        except CostAPIError:
+            raise
         except Exception as e:
+            logger.error("API UNEXPECTED ERROR: %s %s", url, e)
             raise CostAPIError(f"Unexpected error during API request: {e}")
 
     def _build_cache_key(self, endpoint: str, params: dict) -> str:

@@ -3,7 +3,7 @@
 # Configuration
 IMAGE_NAME ?= cost-management-redux
 IMAGE_TAG ?= latest
-REGISTRY ?= quay.io/your-org
+REGISTRY ?= quay.io/acaglio
 
 help:
 	@echo "Cost Management Redux - Available Commands"
@@ -28,7 +28,7 @@ test:
 
 docker-build:
 	@echo "Building Docker image: $(REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG)"
-	docker build -t $(REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG) .
+	podman build -t $(REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG) .
 
 push: docker-build
 	@echo "Pushing image to registry..."

@@ -79,7 +79,7 @@ class DistributionEngine:
             ValueError: If response format is invalid
         """
         # Step 1: Aggregate costs by group
-        aggregated_costs = DistributionEngine._aggregate_by_group(api_response)
+        aggregated_costs = DistributionEngine._aggregate_by_group(api_response, tag_key)
 
         if not aggregated_costs:
             # No cost data
@@ -153,51 +153,55 @@ class DistributionEngine:
         )
 
     @staticmethod
-    def _aggregate_by_group(api_response: dict) -> dict[str, float]:
+    def _aggregate_by_group(api_response: dict, tag_key: str) -> dict[str, float]:
         """
         Aggregate costs by group across all date entries.
 
-        API response structure (from cheatsheet):
-        {
-          "data": [
-            {
-              "date": "2026-06",
-              "groups": [
-                {
-                  "group": "TeamA",
-                  "values": [{
-                    "cost": {"total": {"value": 1500.50}},
-                    "usage": {"value": 100}
-                  }]
-                }
-              ]
-            }
-          ]
-        }
+        The API uses a dynamic key naming convention: for group_by[tag:KEY]=*
+        the response uses KEY+"s" as the array key and KEY as the item field.
+        Examples:
+          group_by[tag:team]=*   → data[].teams[].team
+          group_by[tag:owner]=*  → data[].owners[].owner
+          group_by[tag:cost_center]=* → data[].cost_centers[].cost_center
 
         Args:
             api_response: Raw API response dict
+            tag_key: Tag key used for grouping (e.g. "team", "owner")
 
         Returns:
             Dict mapping group names to aggregated costs
         """
         aggregated_costs: dict[str, float] = {}
 
+        # Derive the response keys from tag_key: "team" → "teams", "cost_center" → "cost_centers"
+        group_list_key = f"{tag_key}s"
+        group_name_field = tag_key
+
         data_entries = api_response.get("data", [])
 
         for entry in data_entries:
-            groups = entry.get("groups", [])
+            # Try derived key first, then scan for any non-date list key as fallback
+            groups = entry.get(group_list_key)
+            if groups is None:
+                groups = next(
+                    (v for k, v in entry.items() if k != "date" and isinstance(v, list)),
+                    []
+                )
+                if groups:
+                    # Detect the name field from the first item (any non-"values" str field)
+                    first = groups[0] if groups else {}
+                    group_name_field = next(
+                        (k for k, v in first.items() if k != "values" and isinstance(v, str)),
+                        tag_key
+                    )
 
             for group_entry in groups:
-                group_name = group_entry.get("group")
+                group_name = group_entry.get(group_name_field)
 
                 if not group_name:
                     continue
 
-                # Extract cost value from nested structure
                 cost_value = DistributionEngine._extract_cost_value(group_entry)
-
-                # Accumulate costs across date entries
                 aggregated_costs[group_name] = aggregated_costs.get(group_name, 0.0) + cost_value
 
         return aggregated_costs

@@ -17,13 +17,20 @@ class Settings(BaseSettings):
     """
 
     # Red Hat Cost Management API credentials
+    # Optional when override_token is set
     cost_client_id: str = Field(
-        ...,
+        default="",
         description="Red Hat API Client ID for authentication"
     )
     cost_client_secret: SecretStr = Field(
-        ...,
+        default="",
         description="Red Hat API Client Secret (sensitive, will be masked in logs)"
+    )
+
+    # Optional: Override token (set via OVERRIDE_TOKEN environment variable)
+    override_token: str | None = Field(
+        default=None,
+        description="Override bearer token for development/testing"
     )
 
     # Cache configuration
@@ -80,6 +87,15 @@ class Settings(BaseSettings):
     def get_client_secret(self) -> str:
         """Get the plain text client secret (use carefully)."""
         return self.cost_client_secret.get_secret_value()
+
+    def model_post_init(self, __context) -> None:
+        """Validate that either OAuth2 credentials or override_token is provided."""
+        if not self.override_token:
+            # If no override token, OAuth2 credentials are required
+            if not self.cost_client_id or not self.cost_client_secret.get_secret_value():
+                raise ValueError(
+                    "Either OVERRIDE_TOKEN or both COST_CLIENT_ID and COST_CLIENT_SECRET must be provided"
+                )
 
 
 def get_settings() -> Settings:

@@ -1,0 +1,530 @@
+{
+  "meta": {
+    "count": 1,
+    "limit": 100,
+    "offset": 0,
+    "currency": "USD",
+    "filter": {
+      "resolution": "monthly",
+      "time_scope_value": "-1",
+      "time_scope_units": "month"
+    },
+    "group_by": {
+      "tag:app": [
+        "*"
+      ]
+    },
+    "order_by": {},
+    "exclude": {},
+    "total": {
+      "infrastructure": {
+        "raw": {
+          "value": 51437.289309859,
+          "units": "USD"
+        },
+        "markup": {
+          "value": 0.0,
+          "units": "USD"
+        },
+        "usage": {
+          "value": 1434.3427243550618,
+          "units": "USD"
+        },
+        "total": {
+          "value": 52871.63203421406,
+          "units": "USD"
+        }
+      },
+      "supplementary": {
+        "raw": {
+          "value": 0.0,
+          "units": "USD"
+        },
+        "markup": {
+          "value": 0.0,
+          "units": "USD"
+        },
+        "usage": {
+          "value": 1.501558160720082,
+          "units": "USD"
+        },
+        "total": {
+          "value": 1.501558160720082,
+          "units": "USD"
+        }
+      },
+      "cost": {
+        "raw": {
+          "value": 51437.289309859,
+          "units": "USD"
+        },
+        "markup": {
+          "value": 0.0,
+          "units": "USD"
+        },
+        "usage": {
+          "value": 1435.844282515782,
+          "units": "USD"
+        },
+        "total": {
+          "value": 52873.13359237478,
+          "units": "USD"
+        }
+      }
+    }
+  },
+  "links": {
+    "first": "/api/cost-management/v1/reports/openshift/costs/?filter%5Bresolution%5D=monthly&filter%5Btime_scope_units%5D=month&filter%5Btime_scope_value%5D=-1&group_by%5Btag%3Aapp%5D=%2A&limit=100&offset=0",
+    "next": null,
+    "previous": null,
+    "last": "/api/cost-management/v1/reports/openshift/costs/?filter%5Bresolution%5D=monthly&filter%5Btime_scope_units%5D=month&filter%5Btime_scope_value%5D=-1&group_by%5Btag%3Aapp%5D=%2A&limit=100&offset=0"
+  },
+  "data": [
+    {
+      "date": "2026-06",
+      "apps": [
+        {
+          "app": "No-app",
+          "values": [
+            {
+              "date": "2026-06",
+              "clusters": [
+                "aro-prod-cost",
+                "kflux-ocp-p01",
+                "kflux-prd-es01",
+                "kflux-prd-rh02",
+                "kflux-prd-rh03",
+                "kflux-stg-es01",
+                "stone-prd-rh01",
+                "stone-prod-p01",
+                "stone-prod-p02",
+                "stone-stage-p01",
+                "stone-stg-rh01",
+                "swongpai-int"
+              ],
+              "source_uuid": [
+                "10febdc7-252d-478c-87a6-09faec3864a9",
+                "2297c446-f30b-4b6a-89bc-2a2c26bc6154",
+                "22a30f73-c192-4f50-9e3c-cda28eeb5a6b",
+                "30d82bd6-552c-4481-bc00-78c0d176d5af",
+                "3d1c253c-5a14-4f69-b03e-c3eb8b74b4cf",
+                "3f945947-a449-41b9-b4ed-2137570d27ed",
+                "5a0191dd-14f9-4302-974a-60ba5ce609e7",
+                "8ecafe39-ee87-4573-a723-38ad4e91b4d3",
+                "9baab7fc-ff80-4e79-810f-c1034b79b933",
+                "bb43fc71-03ab-4388-9a43-05f96df6f289",
+                "c20f1c05-3ce5-4eb8-83d6-47b8cf600131",
+                "f351ecac-e86b-4986-a282-41fe13efe6a7"
+              ],
+              "infrastructure": {
+                "raw": {
+                  "value": 49918.296740835,
+                  "units": "USD"
+                },
+                "markup": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "usage": {
+                  "value": 960.8433934537642,
+                  "units": "USD"
+                },
+                "total": {
+                  "value": 50879.14013428876,
+                  "units": "USD"
+                }
+              },
+              "supplementary": {
+                "raw": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "markup": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "usage": {
+                  "value": 0.72324931898825,
+                  "units": "USD"
+                },
+                "total": {
+                  "value": 0.72324931898825,
+                  "units": "USD"
+                }
+              },
+              "cost": {
+                "raw": {
+                  "value": 49918.296740835,
+                  "units": "USD"
+                },
+                "markup": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "usage": {
+                  "value": 961.5666427727524,
+                  "units": "USD"
+                },
+                "total": {
+                  "value": 50879.86338360775,
+                  "units": "USD"
+                }
+              },
+              "app": "No-app"
+            }
+          ]
+        },
+        {
+          "app": "ovnkube-node",
+          "values": [
+            {
+              "date": "2026-06",
+              "clusters": [
+                "aro-prod-cost",
+                "kflux-ocp-p01",
+                "kflux-prd-es01",
+                "kflux-prd-rh02",
+                "kflux-prd-rh03",
+                "kflux-stg-es01",
+                "stone-prd-rh01",
+                "stone-prod-p01",
+                "stone-prod-p02",
+                "stone-stage-p01",
+                "stone-stg-rh01",
+                "swongpai-int"
+              ],
+              "source_uuid": [
+                "10febdc7-252d-478c-87a6-09faec3864a9",
+                "2297c446-f30b-4b6a-89bc-2a2c26bc6154",
+                "22a30f73-c192-4f50-9e3c-cda28eeb5a6b",
+                "30d82bd6-552c-4481-bc00-78c0d176d5af",
+                "3d1c253c-5a14-4f69-b03e-c3eb8b74b4cf",
+                "3f945947-a449-41b9-b4ed-2137570d27ed",
+                "5a0191dd-14f9-4302-974a-60ba5ce609e7",
+                "8ecafe39-ee87-4573-a723-38ad4e91b4d3",
+                "9baab7fc-ff80-4e79-810f-c1034b79b933",
+                "bb43fc71-03ab-4388-9a43-05f96df6f289",
+                "c20f1c05-3ce5-4eb8-83d6-47b8cf600131",
+                "f351ecac-e86b-4986-a282-41fe13efe6a7"
+              ],
+              "infrastructure": {
+                "raw": {
+                  "value": 164.950378471,
+                  "units": "USD"
+                },
+                "markup": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "usage": {
+                  "value": 65.206603125,
+                  "units": "USD"
+                },
+                "total": {
+                  "value": 230.156981596,
+                  "units": "USD"
+                }
+              },
+              "supplementary": {
+                "raw": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "markup": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "usage": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "total": {
+                  "value": 0.0,
+                  "units": "USD"
+                }
+              },
+              "cost": {
+                "raw": {
+                  "value": 164.950378471,
+                  "units": "USD"
+                },
+                "markup": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "usage": {
+                  "value": 65.206603125,
+                  "units": "USD"
+                },
+                "total": {
+                  "value": 230.156981596,
+                  "units": "USD"
+                }
+              },
+              "app": "ovnkube-node"
+            }
+          ]
+        },
+        {
+          "app": "openshift-kube-apiserver",
+          "values": [
+            {
+              "date": "2026-06",
+              "clusters": [
+                "aro-prod-cost",
+                "kflux-ocp-p01",
+                "kflux-prd-es01",
+                "kflux-prd-rh02",
+                "kflux-prd-rh03",
+                "kflux-stg-es01",
+                "stone-prd-rh01",
+                "stone-prod-p01",
+                "stone-prod-p02",
+                "stone-stage-p01",
+                "stone-stg-rh01",
+                "swongpai-int"
+              ],
+              "source_uuid": [
+                "10febdc7-252d-478c-87a6-09faec3864a9",
+                "2297c446-f30b-4b6a-89bc-2a2c26bc6154",
+                "22a30f73-c192-4f50-9e3c-cda28eeb5a6b",
+                "30d82bd6-552c-4481-bc00-78c0d176d5af",
+                "3d1c253c-5a14-4f69-b03e-c3eb8b74b4cf",
+                "3f945947-a449-41b9-b4ed-2137570d27ed",
+                "5a0191dd-14f9-4302-974a-60ba5ce609e7",
+                "8ecafe39-ee87-4573-a723-38ad4e91b4d3",
+                "9baab7fc-ff80-4e79-810f-c1034b79b933",
+                "bb43fc71-03ab-4388-9a43-05f96df6f289",
+                "c20f1c05-3ce5-4eb8-83d6-47b8cf600131",
+                "f351ecac-e86b-4986-a282-41fe13efe6a7"
+              ],
+              "infrastructure": {
+                "raw": {
+                  "value": 191.747138532,
+                  "units": "USD"
+                },
+                "markup": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "usage": {
+                  "value": 17.8529625,
+                  "units": "USD"
+                },
+                "total": {
+                  "value": 209.600101032,
+                  "units": "USD"
+                }
+              },
+              "supplementary": {
+                "raw": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "markup": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "usage": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "total": {
+                  "value": 0.0,
+                  "units": "USD"
+                }
+              },
+              "cost": {
+                "raw": {
+                  "value": 191.747138532,
+                  "units": "USD"
+                },
+                "markup": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "usage": {
+                  "value": 17.8529625,
+                  "units": "USD"
+                },
+                "total": {
+                  "value": 209.600101032,
+                  "units": "USD"
+                }
+              },
+              "app": "openshift-kube-apiserver"
+            }
+          ]
+        },
+        {
+          "app": "registry-exporter",
+          "values": [
+            {
+              "date": "2026-06",
+              "clusters": [
+                "kflux-ocp-p01",
+                "kflux-prd-rh02",
+                "kflux-prd-rh03",
+                "stone-prd-rh01",
+                "stone-prod-p01",
+                "stone-prod-p02",
+                "stone-stage-p01",
+                "stone-stg-rh01"
+              ],
+              "source_uuid": [
+                "10febdc7-252d-478c-87a6-09faec3864a9",
+                "2297c446-f30b-4b6a-89bc-2a2c26bc6154",
+                "22a30f73-c192-4f50-9e3c-cda28eeb5a6b",
+                "3d1c253c-5a14-4f69-b03e-c3eb8b74b4cf",
+                "5a0191dd-14f9-4302-974a-60ba5ce609e7",
+                "8ecafe39-ee87-4573-a723-38ad4e91b4d3",
+                "9baab7fc-ff80-4e79-810f-c1034b79b933",
+                "bb43fc71-03ab-4388-9a43-05f96df6f289"
+              ],
+              "infrastructure": {
+                "raw": {
+                  "value": 188.841561451,
+                  "units": "USD"
+                },
+                "markup": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "usage": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "total": {
+                  "value": 188.841561451,
+                  "units": "USD"
+                }
+              },
+              "supplementary": {
+                "raw": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "markup": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "usage": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "total": {
+                  "value": 0.0,
+                  "units": "USD"
+                }
+              },
+              "cost": {
+                "raw": {
+                  "value": 188.841561451,
+                  "units": "USD"
+                },
+                "markup": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "usage": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "total": {
+                  "value": 188.841561451,
+                  "units": "USD"
+                }
+              },
+              "app": "registry-exporter"
+            }
+          ]
+        },
+        {
+          "app": "tekton-pipelines-controller",
+          "values": [
+            {
+              "date": "2026-06",
+              "clusters": [
+                "kflux-ocp-p01",
+                "kflux-prd-rh02",
+                "kflux-prd-rh03",
+                "stone-prd-rh01",
+                "stone-prod-p01",
+                "stone-prod-p02",
+                "stone-stage-p01",
+                "stone-stg-rh01",
+                "swongpai-int"
+              ],
+              "source_uuid": [
+                "10febdc7-252d-478c-87a6-09faec3864a9",
+                "2297c446-f30b-4b6a-89bc-2a2c26bc6154",
+                "22a30f73-c192-4f50-9e3c-cda28eeb5a6b",
+                "3d1c253c-5a14-4f69-b03e-c3eb8b74b4cf",
+                "5a0191dd-14f9-4302-974a-60ba5ce609e7",
+                "8ecafe39-ee87-4573-a723-38ad4e91b4d3",
+                "9baab7fc-ff80-4e79-810f-c1034b79b933",
+                "bb43fc71-03ab-4388-9a43-05f96df6f289",
+                "f351ecac-e86b-4986-a282-41fe13efe6a7"
+              ],
+              "infrastructure": {
+                "raw": {
+                  "value": 164.00936927,
+                  "units": "USD"
+                },
+                "markup": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "usage": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "total": {
+                  "value": 164.00936927,
+                  "units": "USD"
+                }
+              },
+              "supplementary": {
+                "raw": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "markup": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "usage": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "total": {
+                  "value": 0.0,
+                  "units": "USD"
+                }
+              },
+              "cost": {
+                "raw": {
+                  "value": 164.00936927,
+                  "units": "USD"
+                },
+                "markup": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "usage": {
+                  "value": 0.0,
+                  "units": "USD"
+                },
+                "total": {
+                  "value": 164.00936927,
+                  "units": "USD"
+                }
+              },
+              "app": "tekton-pipelines-controller"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

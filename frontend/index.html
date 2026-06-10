@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cost Management Redux</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Vue 3 CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body class="theme-redhat">
+    <div id="app" v-cloak>
+        <!-- Header -->
+        <header class="header-bg border-b border-gray-700 shadow-md">
+            <div class="container mx-auto px-6 py-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="text-3xl font-bold text-primary">Cost Management Redux</h1>
+                        <p class="text-sm text-secondary mt-1">OpenShift Cost Distribution Dashboard</p>
+                    </div>
+
+                    <!-- Theme Selector & Settings -->
+                    <div class="flex items-center gap-4">
+                        <!-- Currency Selector -->
+                        <div class="flex items-center gap-2">
+                            <label class="text-sm text-secondary">Currency:</label>
+                            <select v-model="currency" class="input-field px-3 py-1 rounded">
+                                <option value="USD">USD ($)</option>
+                                <option value="EUR">EUR (€)</option>
+                            </select>
+                        </div>
+
+                        <!-- Theme Selector -->
+                        <div class="flex items-center gap-2">
+                            <label class="text-sm text-secondary">Theme:</label>
+                            <select v-model="selectedTheme" @change="changeTheme" class="input-field px-3 py-2 rounded">
+                                <option value="redhat">Red Hat</option>
+                                <option value="alternative">Alternative</option>
+                            </select>
+                        </div>
+
+                        <!-- Keyboard Shortcuts Help -->
+                        <div class="relative group">
+                            <button class="text-secondary hover:text-primary transition-colors p-2" title="Keyboard shortcuts">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </button>
+                            <div class="absolute right-0 top-full mt-2 bg-bg-card border border-border-color rounded-lg shadow-lg p-4 w-64 hidden group-hover:block z-50">
+                                <h4 class="font-semibold text-primary mb-2">Keyboard Shortcuts</h4>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-secondary">Refresh data</span>
+                                        <kbd class="px-2 py-1 bg-bg-hover rounded text-xs font-mono">R</kbd>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-secondary">Close modal</span>
+                                        <kbd class="px-2 py-1 bg-bg-hover rounded text-xs font-mono">ESC</kbd>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard -->
+        <main class="container mx-auto px-6 py-8">
+
+            <!-- Filters Panel -->
+            <div class="card p-6 mb-6">
+                <h2 class="text-xl font-semibold text-primary mb-4">Filters</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Tag Selector -->
+                    <div>
+                        <label class="block text-sm font-medium text-secondary mb-2">Group By Tag:</label>
+                        <div class="flex gap-2">
+                            <select v-model="selectedTag" @change="fetchCosts" class="input-field flex-1 px-4 py-2 rounded" :disabled="loading">
+                                <option value="" disabled>Select a tag...</option>
+                                <option v-for="tag in availableTags" :key="tag" :value="tag">{{ tag }}</option>
+                            </select>
+                            <input
+                                v-model="selectedTag"
+                                @change="fetchCosts"
+                                type="text"
+                                placeholder="Or type custom tag..."
+                                class="input-field flex-1 px-4 py-2 rounded"
+                                :disabled="loading"
+                            />
+                        </div>
+                        <p class="text-xs text-secondary mt-1">Common tags: owner, team, env, app, project</p>
+                    </div>
+
+                    <!-- Time Preset -->
+                    <div>
+                        <label class="block text-sm font-medium text-secondary mb-2">Time Period:</label>
+                        <select v-model="timePreset" @change="onTimePresetChange" class="input-field w-full px-4 py-2 rounded" :disabled="loading">
+                            <option value="last-month">Last Month</option>
+                            <option value="last-3-days">Last 3 Days</option>
+                            <option value="month-to-date">Month to Date</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                    </div>
+
+                    <!-- Resolution -->
+                    <div>
+                        <label class="block text-sm font-medium text-secondary mb-2">Resolution:</label>
+                        <select v-model="resolution" @change="fetchCosts" class="input-field w-full px-4 py-2 rounded" :disabled="loading">
+                            <option value="monthly">Monthly</option>
+                            <option value="daily">Daily</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Custom Date Range (shown when Custom is selected) -->
+                <div v-if="timePreset === 'custom'" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div>
+                        <label class="block text-sm font-medium text-secondary mb-2">Start Date:</label>
+                        <input v-model="startDate" type="date" class="input-field w-full px-4 py-2 rounded" @change="fetchCosts">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-secondary mb-2">End Date:</label>
+                        <input v-model="endDate" type="date" class="input-field w-full px-4 py-2 rounded" @change="fetchCosts">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Getting Started (No data loaded yet) -->
+            <div v-if="!loading && !error && !costData && selectedTag" class="card p-8">
+                <div class="flex items-start gap-4">
+                    <div class="bg-primary/10 p-3 rounded-lg">
+                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-semibold text-primary mb-2">Getting Started</h3>
+                        <p class="text-secondary mb-4">
+                            Select a tag key above and click a time period to view distributed cost data.
+                            The dashboard will show actual costs plus proportionally distributed overhead.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div class="bg-bg-hover p-3 rounded">
+                                <strong class="text-primary">Tag Grouping:</strong>
+                                <p class="text-secondary mt-1">Costs are grouped by the selected tag (e.g., owner, team, env)</p>
+                            </div>
+                            <div class="bg-bg-hover p-3 rounded">
+                                <strong class="text-primary">Overhead Distribution:</strong>
+                                <p class="text-secondary mt-1">Untagged resources are distributed proportionally across tagged groups</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div v-if="loading" class="text-center py-12">
+                <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                <p class="mt-4 text-secondary">Loading cost data...</p>
+            </div>
+
+            <!-- Error State -->
+            <div v-if="error" class="card p-6 mb-6" :class="costData ? 'bg-yellow-50 border-yellow-200' : 'bg-red-50 border-red-200'">
+                <div class="flex items-start gap-3">
+                    <svg class="w-6 h-6 mt-0.5" :class="costData ? 'text-yellow-600' : 'text-red-600'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-1" :class="costData ? 'text-yellow-800' : 'text-red-800'">
+                            {{ costData ? 'Warning' : 'Error' }}
+                        </h3>
+                        <p :class="costData ? 'text-yellow-700' : 'text-red-600'">{{ error }}</p>
+                        <button
+                            v-if="!costData && selectedTag"
+                            @click="error = null; fetchCosts()"
+                            class="mt-3 btn-secondary px-4 py-2 rounded text-sm"
+                        >
+                            Retry
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cost Summary Cards -->
+            <div v-else-if="costData" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="card p-6">
+                    <h3 class="text-sm font-medium text-secondary mb-2">Total Tracked Cost</h3>
+                    <p class="text-3xl font-bold text-primary">{{ formatCurrency(costData.total_tracked_cost) }}</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-sm font-medium text-secondary mb-2">Untagged Overhead</h3>
+                    <p class="text-3xl font-bold text-accent">{{ formatCurrency(costData.total_overhead) }}</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-sm font-medium text-secondary mb-2">Total Distributed Cost</h3>
+                    <p class="text-3xl font-bold text-success">{{ formatCurrency(costData.total_distributed_cost) }}</p>
+                </div>
+            </div>
+
+            <!-- Cost Breakdown Table -->
+            <div v-if="costData && costData.groups.length > 0" class="card p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h2 class="text-xl font-semibold text-primary">Cost Breakdown by {{ costData.meta.tag_key }}</h2>
+                        <span class="text-sm text-secondary">{{ costData.meta.time_period }} • {{ costData.groups.length }} groups</span>
+                    </div>
+                    <button @click="fetchCosts" class="btn-secondary px-4 py-2 rounded flex items-center gap-2" :disabled="loading">
+                        <svg class="w-4 h-4" :class="{'animate-spin': loading}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        Refresh
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="table-header">
+                                <th class="px-6 py-3 text-left">Group</th>
+                                <th class="px-6 py-3 text-right">Base Cost</th>
+                                <th class="px-6 py-3 text-right">Overhead Share</th>
+                                <th class="px-6 py-3 text-right">Total Cost</th>
+                                <th class="px-6 py-3 text-right">Share %</th>
+                                <th class="px-6 py-3 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="group in costData.groups" :key="group.group_name" class="table-row">
+                                <td class="px-6 py-4">
+                                    <div class="font-medium text-primary">{{ group.group_name }}</div>
+                                    <div class="mt-1 bg-bg-hover rounded-full h-2 overflow-hidden">
+                                        <div
+                                            class="h-full bg-primary transition-all duration-500"
+                                            :style="{width: (group.consumption_ratio * 100) + '%'}"
+                                        ></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right">{{ formatCurrency(group.base_cost) }}</td>
+                                <td class="px-6 py-4 text-right text-accent">
+                                    <div>{{ formatCurrency(group.overhead_share) }}</div>
+                                    <div class="text-xs text-secondary" v-if="group.overhead_share > 0">
+                                        +{{ formatPercentage(group.overhead_share / group.base_cost) }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right font-semibold">{{ formatCurrency(group.total_cost) }}</td>
+                                <td class="px-6 py-4 text-right">
+                                    <span class="inline-block px-2 py-1 bg-bg-hover rounded text-sm">
+                                        {{ formatPercentage(group.consumption_ratio) }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <button @click="showDrillDown(group.group_name)" class="btn-secondary px-4 py-1 rounded text-sm hover:shadow-md transition-shadow">
+                                        View Projects
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="border-t-2 border-border-color bg-bg-hover">
+                            <tr class="font-semibold">
+                                <td class="px-6 py-4 text-primary">Total</td>
+                                <td class="px-6 py-4 text-right">{{ formatCurrency(costData.total_tracked_cost) }}</td>
+                                <td class="px-6 py-4 text-right text-accent">{{ formatCurrency(costData.total_overhead) }}</td>
+                                <td class="px-6 py-4 text-right text-lg">{{ formatCurrency(costData.total_distributed_cost) }}</td>
+                                <td class="px-6 py-4 text-right">100%</td>
+                                <td class="px-6 py-4"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <!-- Distribution Formula Explanation -->
+                <div class="mt-4 p-4 bg-bg-hover rounded-lg text-sm">
+                    <strong class="text-primary">💡 Cost Distribution Formula:</strong>
+                    <p class="text-secondary mt-1">
+                        Total Cost = Base Cost + (Overhead × Consumption Ratio)
+                        <br>
+                        <span class="text-xs">Untagged resources ({{ formatCurrency(costData.total_overhead) }}) are distributed proportionally based on each group's share of tracked costs.</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div v-else-if="costData && costData.groups.length === 0" class="card p-12 text-center">
+                <svg class="w-16 h-16 mx-auto text-secondary opacity-50 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <p class="text-xl text-secondary font-medium mb-2">No cost data found</p>
+                <p class="text-sm text-secondary mb-4">
+                    No resources with the tag <strong class="text-primary">{{ selectedTag }}</strong> were found for the selected time period.
+                </p>
+                <div class="flex gap-3 justify-center">
+                    <button @click="selectedTag = 'owner'; fetchCosts()" class="btn-secondary px-4 py-2 rounded text-sm">
+                        Try "owner" tag
+                    </button>
+                    <button @click="selectedTag = 'team'; fetchCosts()" class="btn-secondary px-4 py-2 rounded text-sm">
+                        Try "team" tag
+                    </button>
+                    <button @click="timePreset = 'month-to-date'; onTimePresetChange()" class="btn-secondary px-4 py-2 rounded text-sm">
+                        Try current month
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Drill-Down Modal -->
+        <div v-if="showModal" class="modal-overlay" @click="closeModal">
+            <div class="modal-content" @click.stop>
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-primary">{{ drillDownData?.tag_value || 'Loading...' }}</h3>
+                        <p class="text-sm text-secondary mt-1">Project-level breakdown</p>
+                    </div>
+                    <button
+                        @click="closeModal"
+                        class="text-secondary hover:text-primary transition-colors p-2 hover:bg-bg-hover rounded"
+                    >
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div v-if="loadingDrillDown" class="text-center py-12">
+                    <div class="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+                    <p class="mt-4 text-secondary">Loading project details...</p>
+                </div>
+
+                <div v-else-if="drillDownData?.projects">
+                    <!-- Summary Cards -->
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="bg-bg-hover p-4 rounded-lg">
+                            <p class="text-xs text-secondary uppercase tracking-wide mb-1">Total Cost</p>
+                            <p class="text-2xl font-bold text-primary">{{ formatCurrency(drillDownData.total_cost) }}</p>
+                        </div>
+                        <div class="bg-bg-hover p-4 rounded-lg">
+                            <p class="text-xs text-secondary uppercase tracking-wide mb-1">Projects</p>
+                            <p class="text-2xl font-bold text-accent">{{ drillDownData.project_count }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Projects Table -->
+                    <div v-if="drillDownData.projects.length > 0" class="overflow-x-auto max-h-96 border border-border-color rounded-lg">
+                        <table class="w-full">
+                            <thead class="sticky top-0">
+                                <tr class="table-header">
+                                    <th class="px-6 py-3 text-left">Project Name</th>
+                                    <th class="px-6 py-3 text-right">Cost</th>
+                                    <th class="px-6 py-3 text-right">Share</th>
+                                    <th class="px-6 py-3 text-right">Usage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="project in drillDownData.projects" :key="project.project_name" class="table-row">
+                                    <td class="px-6 py-4 font-medium text-primary">{{ project.project_name }}</td>
+                                    <td class="px-6 py-4 text-right font-semibold">{{ formatCurrency(project.cost) }}</td>
+                                    <td class="px-6 py-4 text-right">
+                                        <span class="inline-block px-2 py-1 bg-bg-main rounded text-xs">
+                                            {{ formatPercentage(project.cost / drillDownData.total_cost) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right text-secondary">
+                                        {{ project.usage ? project.usage.toFixed(2) : 'N/A' }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div v-else class="text-center py-8 text-secondary">
+                        <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                        </svg>
+                        <p>No projects found for this group</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+</body>
+</html>
