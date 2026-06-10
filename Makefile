@@ -1,45 +1,61 @@
-.PHONY: dev test docker-build push clean help
+.PHONY: help install dev dev-token test lint format build push clean
 
-# Configuration
-IMAGE_NAME ?= cost-management-redux
-IMAGE_TAG ?= latest
-REGISTRY ?= quay.io/acaglio
+# ── Configuration ────────────────────────────────────────────────────────────
+IMAGE_NAME    ?= cost-management-redux
+IMAGE_TAG     ?= latest
+REGISTRY      ?= quay.io/acaglio
+FULL_IMAGE    := $(REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG)
 
-help:
-	@echo "Cost Management Redux - Available Commands"
-	@echo "==========================================="
-	@echo "make dev          - Start development server (backend + frontend)"
-	@echo "make test         - Run backend tests with coverage"
-	@echo "make docker-build - Build Docker image"
-	@echo "make push         - Push Docker image to registry"
-	@echo "make clean        - Clean temporary files and caches"
-	@echo ""
+BACKEND_DIR   := backend
+PYTHON        := python3
 
-dev:
-	@echo "Starting development server..."
-	@echo "Frontend: http://localhost:8000"
-	@echo "API Docs: http://localhost:8000/docs"
-	@if [ ! -f .env ]; then echo "ERROR: .env file not found. Copy .env.example to .env and configure credentials."; exit 1; fi
-	cd backend && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+# ── Help ─────────────────────────────────────────────────────────────────────
+help: ## Show this help message
+	@awk 'BEGIN {FS = ":.*##"; printf "\nCost Management Redux\n\nUsage:\n  make \033[36m<target>\033[0m\n\nTargets:\n"} \
+	      /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
-test:
-	@echo "Running backend tests..."
-	cd backend && pytest -v --cov=app --cov-report=html --cov-report=term
+# ── Development ───────────────────────────────────────────────────────────────
+install: ## Install Python dependencies
+	pip install -r $(BACKEND_DIR)/requirements.txt
 
-docker-build:
-	@echo "Building Docker image: $(REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG)"
-	podman build -t $(REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG) .
+dev: ## Start dev server using .env credentials (requires .env file)
+	@test -f .env || { echo "ERROR: .env not found — copy .env.example to .env and fill in credentials"; exit 1; }
+	$(PYTHON) run_server.py --reload
 
-push: docker-build
-	@echo "Pushing image to registry..."
-	docker push $(REGISTRY)/$(IMAGE_NAME):$(IMAGE_TAG)
+dev-token: ## Start dev server with a bearer token: make dev-token TOKEN=eyJ...
+	@test -n "$(TOKEN)" || { echo "ERROR: TOKEN is required — run: make dev-token TOKEN=<your-token>"; exit 1; }
+	$(PYTHON) run_server.py --token "$(TOKEN)" --reload
 
-clean:
-	@echo "Cleaning temporary files..."
+# ── Testing ───────────────────────────────────────────────────────────────────
+test: ## Run tests with coverage report
+	cd $(BACKEND_DIR) && pytest -v --cov=app --cov-report=term --cov-report=html
+
+test-fast: ## Run tests without coverage (faster)
+	cd $(BACKEND_DIR) && pytest -q
+
+# ── Code Quality ──────────────────────────────────────────────────────────────
+lint: ## Lint backend code with ruff (install: pip install ruff)
+	@command -v ruff >/dev/null 2>&1 || { echo "ruff not found — run: pip install ruff"; exit 1; }
+	ruff check $(BACKEND_DIR)/app $(BACKEND_DIR)/tests
+
+format: ## Auto-format backend code with black (install: pip install black)
+	@command -v black >/dev/null 2>&1 || { echo "black not found — run: pip install black"; exit 1; }
+	black $(BACKEND_DIR)/app $(BACKEND_DIR)/tests
+
+# ── Container ─────────────────────────────────────────────────────────────────
+build: ## Build container image with podman
+	podman build -t $(FULL_IMAGE) .
+	@echo "Built: $(FULL_IMAGE)"
+
+push: build ## Build and push image to registry
+	podman push $(FULL_IMAGE)
+	@echo "Pushed: $(FULL_IMAGE)"
+
+# ── Cleanup ───────────────────────────────────────────────────────────────────
+clean: ## Remove caches, build artifacts, and coverage reports
 	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
 	find . -type d -name ".pytest_cache" -exec rm -rf {} + 2>/dev/null || true
-	find . -type d -name "htmlcov" -exec rm -rf {} + 2>/dev/null || true
-	find . -type f -name "*.pyc" -delete 2>/dev/null || true
-	find . -type f -name "*.pyo" -delete 2>/dev/null || true
-	find . -type f -name ".coverage" -delete 2>/dev/null || true
+	find . -type d -name "htmlcov"       -exec rm -rf {} + 2>/dev/null || true
+	find . -type f -name "*.pyc"         -delete 2>/dev/null || true
+	find . -type f -name ".coverage"     -delete 2>/dev/null || true
 	@echo "Clean complete."

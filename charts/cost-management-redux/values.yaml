@@ -3,7 +3,7 @@
 replicaCount: 1
 
 image:
-  repository: quay.io/your-org/cost-management-redux
+  repository: quay.io/acaglio/cost-management-redux
   pullPolicy: IfNotPresent
   tag: "latest"
 
@@ -41,13 +41,15 @@ route:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
 
-# Red Hat Cost Management API credentials
-# These should be created as a Secret externally
+# Red Hat Cost Management API credentials Secret.
+# create: false (default) — Secret must exist before install (Sealed Secrets / Vault / manual).
+# create: true            — Helm creates the Secret from costClientId / costClientSecret below.
+#                           Not recommended for production; use only for quick testing.
 secrets:
   name: cost-management-credentials
-  # Secret should contain:
-  #   COST_CLIENT_ID
-  #   COST_CLIENT_SECRET
+  create: false
+  costClientId: ""
+  costClientSecret: ""
 
 config:
   cacheTtlSeconds: 900
@@ -68,6 +70,7 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 3
   targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: ""  # leave empty to disable memory-based scaling
 
 nodeSelector: {}
 

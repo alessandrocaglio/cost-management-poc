@@ -1,0 +1,24 @@
+Cost Management Redux has been deployed.
+
+1. Get the application URL:
+{{- if .Values.route.enabled }}
+   oc get route {{ include "cost-management-redux.fullname" . }} -o jsonpath='{.spec.host}'
+   # Then open: https://<host>
+{{- else }}
+   export POD=$(kubectl get pods -l "app.kubernetes.io/name={{ include "cost-management-redux.name" . }}" -o jsonpath="{.items[0].metadata.name}")
+   kubectl port-forward $POD 8000:8000
+   # Then open: http://localhost:8000
+{{- end }}
+
+2. Check service health:
+   curl https://$(oc get route {{ include "cost-management-redux.fullname" . }} -o jsonpath='{.spec.host}')/api/health
+
+3. View API documentation:
+   https://<host>/docs
+
+{{- if not .Values.secrets.create }}
+4. Ensure the credentials Secret exists:
+   oc create secret generic {{ .Values.secrets.name }} \
+     --from-literal=COST_CLIENT_ID=<your-client-id> \
+     --from-literal=COST_CLIENT_SECRET=<your-client-secret>
+{{- end }}
