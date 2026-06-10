@@ -488,13 +488,18 @@ async def probe_tags(
 
 
 # Mount static files for frontend (must be last)
-# Check if frontend directory exists
-frontend_path = Path(__file__).parent.parent.parent / "frontend"
-if frontend_path.exists():
+# Probe both container layout (/app/frontend) and local dev layout (../../frontend)
+_app_dir = Path(__file__).parent
+_frontend_candidates = [
+    _app_dir.parent / "frontend",         # container: /app/app -> /app/frontend
+    _app_dir.parent.parent / "frontend",  # dev: backend/app -> backend/../frontend
+]
+frontend_path = next((p for p in _frontend_candidates if p.exists()), None)
+if frontend_path:
     app.mount("/", StaticFiles(directory=str(frontend_path), html=True), name="frontend")
     logger.info(f"Serving frontend from {frontend_path}")
 else:
-    logger.warning(f"Frontend directory not found at {frontend_path}")
+    logger.warning("Frontend directory not found; UI will not be served")
 
 
 if __name__ == "__main__":

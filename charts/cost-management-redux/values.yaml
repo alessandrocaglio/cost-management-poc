@@ -28,7 +28,6 @@ securityContext:
   capabilities:
     drop:
     - ALL
-  runAsUser: 1000
 
 service:
   type: ClusterIP
