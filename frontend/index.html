@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cost Management Redux</title>
 
+    <!-- Fonts: Red Hat brand (primary theme) + DM Sans (alternative theme) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700&family=Red+Hat+Text:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -82,20 +87,23 @@
                     <!-- Tag Selector -->
                     <div>
                         <label class="block text-sm font-medium text-secondary mb-2">Group By Tag:</label>
-                        <div class="flex gap-2">
-                            <select v-model="selectedTag" @change="fetchCosts" class="input-field flex-1 px-4 py-2 rounded" :disabled="loading">
-                                <option value="" disabled>Select a tag...</option>
-                                <option v-for="tag in availableTags" :key="tag" :value="tag">{{ tag }}</option>
-                            </select>
-                            <input
-                                v-model="selectedTag"
-                                @change="fetchCosts"
-                                type="text"
-                                placeholder="Or type custom tag..."
-                                class="input-field flex-1 px-4 py-2 rounded"
-                                :disabled="loading"
-                            />
-                        </div>
+                        <select
+                            v-model="selectedTag"
+                            @change="fetchCosts"
+                            class="input-field w-full px-4 py-2 rounded mb-2"
+                            :disabled="loading"
+                        >
+                            <option value="" disabled>Select from available tags…</option>
+                            <option v-for="tag in availableTags" :key="tag" :value="tag">{{ tag }}</option>
+                        </select>
+                        <input
+                            v-model="selectedTag"
+                            @change="fetchCosts"
+                            type="text"
+                            placeholder="Or type a custom tag…"
+                            class="input-field w-full px-4 py-2 rounded"
+                            :disabled="loading"
+                        />
                         <p class="text-xs text-secondary mt-1">Common tags: owner, team, env, app, project</p>
                     </div>
 
@@ -191,17 +199,17 @@
 
             <!-- Cost Summary Cards -->
             <div v-else-if="costData" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <div class="card p-6">
+                <div class="card card-tracked p-6">
                     <h3 class="text-sm font-medium text-secondary mb-2">Total Tracked Cost</h3>
-                    <p class="text-3xl font-bold text-primary">{{ formatCurrency(costData.total_tracked_cost) }}</p>
+                    <p class="cost-figure text-3xl text-accent">{{ formatCurrency(costData.total_tracked_cost) }}</p>
                 </div>
-                <div class="card p-6">
+                <div class="card card-overhead p-6">
                     <h3 class="text-sm font-medium text-secondary mb-2">Untagged Overhead</h3>
-                    <p class="text-3xl font-bold text-accent">{{ formatCurrency(costData.total_overhead) }}</p>
+                    <p class="cost-figure text-3xl text-warning">{{ formatCurrency(costData.total_overhead) }}</p>
                 </div>
-                <div class="card p-6">
+                <div class="card card-distributed p-6">
                     <h3 class="text-sm font-medium text-secondary mb-2">Total Distributed Cost</h3>
-                    <p class="text-3xl font-bold text-success">{{ formatCurrency(costData.total_distributed_cost) }}</p>
+                    <p class="cost-figure text-3xl text-success">{{ formatCurrency(costData.total_distributed_cost) }}</p>
                 </div>
             </div>
 
@@ -338,11 +346,11 @@
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <div class="bg-bg-hover p-4 rounded-lg">
                             <p class="text-xs text-secondary uppercase tracking-wide mb-1">Total Cost</p>
-                            <p class="text-2xl font-bold text-primary">{{ formatCurrency(drillDownData.total_cost) }}</p>
+                            <p class="cost-figure text-2xl text-primary">{{ formatCurrency(drillDownData.total_cost) }}</p>
                         </div>
                         <div class="bg-bg-hover p-4 rounded-lg">
                             <p class="text-xs text-secondary uppercase tracking-wide mb-1">Projects</p>
-                            <p class="text-2xl font-bold text-accent">{{ drillDownData.project_count }}</p>
+                            <p class="cost-figure text-2xl text-accent">{{ drillDownData.project_count }}</p>
                         </div>
                     </div>
 

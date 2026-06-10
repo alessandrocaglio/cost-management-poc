@@ -4,6 +4,13 @@
  */
 
 /* ============================================
+   TYPOGRAPHY
+   Red Hat Display  → headings & large numbers
+   Red Hat Text     → body, labels, controls
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700&family=Red+Hat+Text:wght@400;500;600&display=swap');
+
+/* ============================================
    RED HAT THEME (Primary)
    ============================================ */
 body.theme-redhat {
@@ -66,6 +73,32 @@ body.theme-alternative {
 }
 
 /* ============================================
+   ALTERNATIVE THEME FONT OVERRIDES
+   DM Sans replaces Red Hat Display/Text throughout
+   ============================================ */
+body.theme-alternative {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body.theme-alternative h1,
+body.theme-alternative h2,
+body.theme-alternative h3,
+body.theme-alternative h4,
+body.theme-alternative .cost-figure {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+body.theme-alternative label,
+body.theme-alternative button,
+body.theme-alternative select,
+body.theme-alternative input,
+body.theme-alternative .table-header th {
+    font-family: 'DM Sans', sans-serif;
+}
+
+/* ============================================
    GLOBAL STYLES
    ============================================ */
 * {
@@ -75,10 +108,34 @@ body.theme-alternative {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Red Hat Text', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
     background-color: var(--bg-main);
     color: var(--text-primary);
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Headings and large display figures use Red Hat Display */
+h1, h2, h3, h4 {
+    font-family: 'Red Hat Display', sans-serif;
+    font-weight: 700;
+}
+
+/* Large cost numbers shown in summary cards */
+.cost-figure {
+    font-family: 'Red Hat Display', sans-serif;
+    font-weight: 700;
+}
+
+/* Navigation breadcrumbs, labels — Red Hat Text medium */
+label,
+.table-header th,
+.text-sm,
+button,
+select,
+input {
+    font-family: 'Red Hat Text', sans-serif;
 }
 
 /* Vue cloak directive */
@@ -121,6 +178,39 @@ body {
 
 .card:hover {
     box-shadow: var(--shadow-lg);
+}
+
+/* Summary card colour accents — top border + subtle tinted background */
+
+/* Total Tracked Cost — blue (accent) */
+.card-tracked {
+    border-top: 4px solid var(--accent-color);
+    background: linear-gradient(160deg, rgba(0, 102, 204, 0.06) 0%, var(--bg-card) 55%);
+}
+
+/* Untagged Overhead — amber/orange (warning) */
+.card-overhead {
+    border-top: 4px solid var(--warning-color);
+    background: linear-gradient(160deg, rgba(240, 171, 0, 0.08) 0%, var(--bg-card) 55%);
+}
+
+/* Total Distributed Cost — green (success) */
+.card-distributed {
+    border-top: 4px solid var(--success-color);
+    background: linear-gradient(160deg, rgba(62, 134, 53, 0.07) 0%, var(--bg-card) 55%);
+}
+
+/* Alternative theme overrides — teal / orange / green */
+body.theme-alternative .card-tracked {
+    background: linear-gradient(160deg, rgba(26, 60, 60, 0.07) 0%, var(--bg-card) 55%);
+}
+
+body.theme-alternative .card-overhead {
+    background: linear-gradient(160deg, rgba(255, 92, 40, 0.07) 0%, var(--bg-card) 55%);
+}
+
+body.theme-alternative .card-distributed {
+    background: linear-gradient(160deg, rgba(45, 134, 89, 0.07) 0%, var(--bg-card) 55%);
 }
 
 /* ============================================
@@ -193,6 +283,16 @@ table {
 .table-row {
     border-bottom: 1px solid var(--border-color);
     transition: background-color 0.2s ease;
+}
+
+/* Alternating stripe — Red Hat theme: very light blue tint on even rows */
+.table-row:nth-child(even) {
+    background-color: rgba(0, 102, 204, 0.04);
+}
+
+/* Alternating stripe — Alternative theme: very light teal tint on even rows */
+body.theme-alternative .table-row:nth-child(even) {
+    background-color: rgba(26, 60, 60, 0.05);
 }
 
 .table-row:hover {
