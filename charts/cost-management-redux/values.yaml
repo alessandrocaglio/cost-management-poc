@@ -1,0 +1,76 @@
+# Default values for cost-management-redux
+
+replicaCount: 1
+
+image:
+  repository: quay.io/your-org/cost-management-redux
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+  runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 8000
+
+route:
+  enabled: true
+  host: ""
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+
+# Red Hat Cost Management API credentials
+# These should be created as a Secret externally
+secrets:
+  name: cost-management-credentials
+  # Secret should contain:
+  #   COST_CLIENT_ID
+  #   COST_CLIENT_SECRET
+
+config:
+  cacheTtlSeconds: 900
+  ssoTokenUrl: "https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token"
+  costApiBaseUrl: "https://console.redhat.com/api/cost-management/v1"
+  corsOrigins: "*"
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

@@ -1,0 +1,12 @@
+apiVersion: v2
+name: cost-management-redux
+description: A Helm chart for Cost Management Redux application
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+keywords:
+  - cost-management
+  - openshift
+  - redhat
+maintainers:
+  - name: Red Hat Labs
