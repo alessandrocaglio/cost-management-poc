@@ -56,6 +56,8 @@ config:
   costApiBaseUrl: "https://console.redhat.com/api/cost-management/v1"
   corsOrigins: "*"
 
+extraEnv: []
+
 resources:
   limits:
     cpu: 500m
