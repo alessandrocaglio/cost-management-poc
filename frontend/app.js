@@ -34,6 +34,10 @@ createApp({
         const projectResourcesLoading  = ref({}); // { projectName: bool }
         const projectResourcesError    = ref({}); // { projectName: string | null }
 
+        // Sorting state — both tables default to total_cost descending
+        const dashboardSort  = ref({ col: 'total_cost', dir: 'desc' });
+        const drilldownSort  = ref({ col: 'total_cost', dir: 'desc' });
+
         // ── Theme ───────────────────────────────────────────────────────────
         function changeTheme() {
             document.body.className = `theme-${selectedTheme.value}`;
@@ -194,6 +198,36 @@ createApp({
             }
         }
 
+        // ── Sorting ───────────────────────────────────────────────────────────
+        function applySortRows(rows, sortState) {
+            return [...rows].sort((a, b) => {
+                const av = a[sortState.col] ?? '';
+                const bv = b[sortState.col] ?? '';
+                const cmp = typeof av === 'string' ? av.localeCompare(bv) : av - bv;
+                return sortState.dir === 'asc' ? cmp : -cmp;
+            });
+        }
+
+        // Clicking the active column toggles direction; clicking a new column starts desc.
+        function setDashboardSort(col) {
+            dashboardSort.value = dashboardSort.value.col === col
+                ? { col, dir: dashboardSort.value.dir === 'asc' ? 'desc' : 'asc' }
+                : { col, dir: 'desc' };
+        }
+
+        function setDrilldownSort(col) {
+            drilldownSort.value = drilldownSort.value.col === col
+                ? { col, dir: drilldownSort.value.dir === 'asc' ? 'desc' : 'asc' }
+                : { col, dir: 'desc' };
+        }
+
+        // Returns the indicator character for a column header.
+        // sortState is the auto-unwrapped plain object when called from the template.
+        function sortIndicator(sortState, col) {
+            if (sortState.col !== col) return '⇅';
+            return sortState.dir === 'asc' ? '↑' : '↓';
+        }
+
         // ── Per-project cost distribution ─────────────────────────────────────
         // Source of truth: drilldown project costs (may differ from group-level aggregation).
         // Overhead from selectedGroup is distributed proportionally across actual project costs.
@@ -205,24 +239,30 @@ createApp({
             return { baseCost, overheadShare, totalCost };
         });
 
+        const sortedGroups = computed(() => {
+            if (!costData.value?.groups) return [];
+            return applySortRows(costData.value.groups, dashboardSort.value);
+        });
+
         const projectsWithDistribution = computed(() => {
             if (!drillDownData.value?.projects || !detailTotals.value) return [];
 
             const { baseCost: totalBaseCost, overheadShare: groupOverhead, totalCost: grandTotal } = detailTotals.value;
-            const projects = [...drillDownData.value.projects].sort((a, b) => b.cost - a.cost);
 
-            return projects.map(p => {
+            const mapped = drillDownData.value.projects.map(p => {
                 const shareRatio    = totalBaseCost > 0 ? p.cost / totalBaseCost : 0;
                 const overheadShare = groupOverhead * shareRatio;
                 const totalCost     = p.cost + overheadShare;
                 return {
                     ...p,
-                    base_cost:        p.cost,
-                    overhead_share:   overheadShare,
-                    total_cost:       totalCost,
+                    base_cost:         p.cost,
+                    overhead_share:    overheadShare,
+                    total_cost:        totalCost,
                     consumption_ratio: grandTotal > 0 ? totalCost / grandTotal : 0,
                 };
             });
+
+            return applySortRows(mapped, drilldownSort.value);
         });
 
         // ── Keyboard shortcuts ────────────────────────────────────────────────
@@ -270,10 +310,13 @@ createApp({
             costData, drillDownData, selectedGroup,
             loading, loadingDrillDown, error,
             currentView, activeTab,
-            detailTotals, projectsWithDistribution,
+            detailTotals, sortedGroups, projectsWithDistribution,
             fetchCosts, navigateToDrillDown, goBack, refreshDrillDown, onTimePresetChange,
             expandedProjects, projectResources, projectResourcesLoading, projectResourcesError,
             toggleProjectExpand,
+            dashboardSort, setDashboardSort,
+            drilldownSort, setDrilldownSort,
+            sortIndicator,
             formatCurrency, formatPercentage, formatResourceValue,
         };
     }

@@ -533,6 +533,39 @@ body.theme-alternative .table-row:nth-child(even) {
 .formula-value { color: var(--text-secondary); text-align: right; }
 
 /* ============================================
+   SORTABLE TABLE HEADERS
+   ============================================ */
+
+.sortable-col {
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.sortable-col:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+/* Inactive sort indicator — faint ⇅ */
+.sort-indicator {
+    display: inline-block;
+    margin-left: 4px;
+    font-size: 0.65rem;
+    opacity: 0.3;
+    transition: opacity 0.15s, color 0.15s;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+/* Active column — indicator becomes vivid accent-colored */
+.sort-active .sort-indicator {
+    opacity: 1;
+    color: var(--accent-color);
+}
+
+/* ============================================
    PROJECT ACCORDION
    ============================================ */
 

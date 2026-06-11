@@ -201,16 +201,26 @@
                     <table class="w-full">
                         <thead>
                             <tr class="table-header">
-                                <th class="px-6 py-3 text-left">Group</th>
-                                <th class="px-6 py-3 text-right">Base Cost</th>
-                                <th class="px-6 py-3 text-right">Overhead Share</th>
-                                <th class="px-6 py-3 text-right">Total Cost</th>
-                                <th class="px-6 py-3 text-right">Share %</th>
+                                <th @click="setDashboardSort('group_name')" class="px-6 py-3 text-left sortable-col" :class="{ 'sort-active': dashboardSort.col === 'group_name' }">
+                                    Group <span class="sort-indicator">{{ sortIndicator(dashboardSort, 'group_name') }}</span>
+                                </th>
+                                <th @click="setDashboardSort('base_cost')" class="px-6 py-3 text-right sortable-col" :class="{ 'sort-active': dashboardSort.col === 'base_cost' }">
+                                    Base Cost <span class="sort-indicator">{{ sortIndicator(dashboardSort, 'base_cost') }}</span>
+                                </th>
+                                <th @click="setDashboardSort('overhead_share')" class="px-6 py-3 text-right sortable-col" :class="{ 'sort-active': dashboardSort.col === 'overhead_share' }">
+                                    Overhead Share <span class="sort-indicator">{{ sortIndicator(dashboardSort, 'overhead_share') }}</span>
+                                </th>
+                                <th @click="setDashboardSort('total_cost')" class="px-6 py-3 text-right sortable-col" :class="{ 'sort-active': dashboardSort.col === 'total_cost' }">
+                                    Total Cost <span class="sort-indicator">{{ sortIndicator(dashboardSort, 'total_cost') }}</span>
+                                </th>
+                                <th @click="setDashboardSort('consumption_ratio')" class="px-6 py-3 text-right sortable-col" :class="{ 'sort-active': dashboardSort.col === 'consumption_ratio' }">
+                                    Share % <span class="sort-indicator">{{ sortIndicator(dashboardSort, 'consumption_ratio') }}</span>
+                                </th>
                                 <th class="px-6 py-3 text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="group in costData.groups" :key="group.group_name" class="table-row">
+                            <tr v-for="group in sortedGroups" :key="group.group_name" class="table-row">
                                 <td class="px-6 py-4">
                                     <div class="font-medium" style="color:var(--text-primary)">{{ group.group_name }}</div>
                                     <div class="mt-1 bg-bg-hover rounded-full h-2 overflow-hidden">
@@ -394,12 +404,24 @@
                             <thead>
                                 <tr class="table-header">
                                     <th class="px-3 py-3 w-8"></th>
-                                    <th class="px-6 py-3 text-left">Project</th>
-                                    <th class="px-6 py-3 text-left">Cluster</th>
-                                    <th class="px-6 py-3 text-right">Base Cost</th>
-                                    <th class="px-6 py-3 text-right">Overhead Share</th>
-                                    <th class="px-6 py-3 text-right">Total Cost</th>
-                                    <th class="px-6 py-3 text-right">Share %</th>
+                                    <th @click="setDrilldownSort('project_name')" class="px-6 py-3 text-left sortable-col" :class="{ 'sort-active': drilldownSort.col === 'project_name' }">
+                                        Project <span class="sort-indicator">{{ sortIndicator(drilldownSort, 'project_name') }}</span>
+                                    </th>
+                                    <th @click="setDrilldownSort('cluster')" class="px-6 py-3 text-left sortable-col" :class="{ 'sort-active': drilldownSort.col === 'cluster' }">
+                                        Cluster <span class="sort-indicator">{{ sortIndicator(drilldownSort, 'cluster') }}</span>
+                                    </th>
+                                    <th @click="setDrilldownSort('base_cost')" class="px-6 py-3 text-right sortable-col" :class="{ 'sort-active': drilldownSort.col === 'base_cost' }">
+                                        Base Cost <span class="sort-indicator">{{ sortIndicator(drilldownSort, 'base_cost') }}</span>
+                                    </th>
+                                    <th @click="setDrilldownSort('overhead_share')" class="px-6 py-3 text-right sortable-col" :class="{ 'sort-active': drilldownSort.col === 'overhead_share' }">
+                                        Overhead Share <span class="sort-indicator">{{ sortIndicator(drilldownSort, 'overhead_share') }}</span>
+                                    </th>
+                                    <th @click="setDrilldownSort('total_cost')" class="px-6 py-3 text-right sortable-col" :class="{ 'sort-active': drilldownSort.col === 'total_cost' }">
+                                        Total Cost <span class="sort-indicator">{{ sortIndicator(drilldownSort, 'total_cost') }}</span>
+                                    </th>
+                                    <th @click="setDrilldownSort('consumption_ratio')" class="px-6 py-3 text-right sortable-col" :class="{ 'sort-active': drilldownSort.col === 'consumption_ratio' }">
+                                        Share % <span class="sort-indicator">{{ sortIndicator(drilldownSort, 'consumption_ratio') }}</span>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
