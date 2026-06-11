@@ -331,7 +331,301 @@ body.theme-alternative .table-row:nth-child(even) {
 }
 
 /* ============================================
-   MODAL
+   DETAIL PAGE
+   ============================================ */
+.detail-page {
+    min-height: 100vh;
+    background-color: var(--bg-main);
+}
+
+.detail-container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+/* Breadcrumb */
+.breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+}
+.breadcrumb-link {
+    color: var(--accent-color);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+}
+.breadcrumb-link:hover { text-decoration: underline; }
+.breadcrumb-sep { color: var(--text-secondary); }
+.breadcrumb-current { color: var(--text-secondary); }
+
+/* Breadcrumb link inside the dark header subtitle */
+.detail-breadcrumb-link {
+    color: var(--text-on-dark);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+    opacity: 0.8;
+}
+.detail-breadcrumb-link:hover { opacity: 1; text-decoration: underline; }
+
+/* Back link */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.875rem;
+    color: var(--accent-color);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+}
+.back-link:hover { text-decoration: underline; }
+
+/* Page title */
+.detail-title {
+    font-family: 'Red Hat Display', 'DM Sans', sans-serif;
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+/* Overhead badge */
+.overhead-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    background: var(--bg-card);
+    cursor: default;
+}
+
+/* Large total cost number */
+.detail-total-cost {
+    font-size: 2.5rem;
+    line-height: 1;
+    color: var(--text-primary);
+}
+
+/* Tab bar */
+.tab-bar {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--border-color);
+    margin-top: 16px;
+}
+.tab-btn {
+    padding: 10px 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.15s, border-color 0.15s;
+}
+.tab-btn:hover { color: var(--text-primary); }
+.tab-active {
+    color: var(--accent-color) !important;
+    border-bottom-color: var(--accent-color) !important;
+    font-weight: 600;
+}
+
+/* Two-column content grid */
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+@media (max-width: 900px) {
+    .detail-grid { grid-template-columns: 1fr; }
+}
+
+/* Card title inside detail panels */
+.detail-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-family: 'Red Hat Display', 'DM Sans', sans-serif;
+}
+
+/* Sankey SVG */
+.sankey-wrap {
+    width: 100%;
+}
+.sankey-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+}
+.sankey-label {
+    font-size: 11px;
+    font-weight: 600;
+    fill: var(--text-primary);
+    font-family: 'Red Hat Text', 'DM Sans', sans-serif;
+}
+.sankey-sublabel {
+    font-size: 9px;
+    fill: var(--text-secondary);
+    font-family: 'Red Hat Text', 'DM Sans', sans-serif;
+}
+
+/* Legend dot */
+.legend-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+/* Resource bar (like Memory/CPU panels in RH UI) */
+.resource-bar-track {
+    width: 100%;
+    height: 8px;
+    background: var(--bg-hover);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.resource-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+.resource-bar-light {
+    background: color-mix(in srgb, var(--accent-color) 40%, white) !important;
+}
+
+/* Distribution formula block */
+.formula-block {
+    background: var(--bg-hover);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 0.8rem;
+}
+.formula-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 3px 0;
+    color: var(--text-secondary);
+}
+.formula-label { font-weight: 500; color: var(--text-primary); }
+.formula-value { color: var(--text-secondary); text-align: right; }
+
+/* ============================================
+   PROJECT ACCORDION
+   ============================================ */
+
+/* Make the project data row feel clickable */
+.project-row-expandable {
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Chevron rotates 90° when the row is expanded */
+.chevron-icon {
+    transition: transform 0.2s ease;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+}
+
+.chevron-icon.expanded {
+    transform: rotate(90deg);
+}
+
+/* Accordion content row — slightly inset background */
+.accordion-row {
+    background-color: var(--bg-hover) !important;
+}
+
+.accordion-row:hover {
+    background-color: var(--bg-hover) !important;
+}
+
+/* Wrapper that animates in when the accordion opens */
+.accordion-content {
+    padding: 16px 24px 20px 48px;
+    animation: accordionOpen 0.18s ease;
+}
+
+@keyframes accordionOpen {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Individual resource card (CPU / Memory / Storage) */
+.resource-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+}
+
+/* Top-border accent per resource type */
+.resource-card-cpu     { border-top: 3px solid var(--accent-color); }
+.resource-card-memory  { border-top: 3px solid var(--success-color); }
+.resource-card-storage { border-top: 3px solid var(--warning-color); }
+
+/* Card heading */
+.resource-card-title {
+    font-family: 'Red Hat Display', 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Each metric line inside a resource card */
+.resource-metric-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.8rem;
+}
+
+.resource-metric-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.resource-metric-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.resource-metric-value {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ============================================
+   MODAL (kept for reference, no longer used)
    ============================================ */
 .modal-overlay {
     position: fixed;

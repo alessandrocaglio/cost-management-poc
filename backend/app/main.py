@@ -28,6 +28,8 @@ from app.models import (
     TagKeysResponse,
     ProjectDetailResponse,
     ProjectCost,
+    ResourceMetric,
+    ProjectResourcesResponse,
     HealthResponse,
     ErrorResponse,
 )
@@ -355,11 +357,15 @@ async def get_project_drilldown(
                 # Extract usage if available
                 usage_value = values[0].get("usage", {}).get("value")
 
+                # "clusters" is a list of cluster names on the value object
+                cluster_value = ", ".join(values[0].get("clusters", [])) or None
+
                 projects.append(
                     ProjectCost(
                         project_name=project_name,
                         cost=cost_value,
-                        usage=usage_value
+                        usage=usage_value,
+                        cluster=cluster_value
                     )
                 )
 
@@ -376,6 +382,48 @@ async def get_project_drilldown(
         tag_value=tag_value,
         total_cost=total_cost,
         project_count=len(projects)
+    )
+
+
+@app.get(
+    "/api/costs/project-resources",
+    response_model=ProjectResourcesResponse,
+    summary="Get resource metrics for a specific project",
+    description="Returns aggregated CPU, memory, and PVC usage/request/limit for a project (lazy-loaded by accordion)",
+    tags=["Costs"]
+)
+async def get_project_resources(
+    project_name: Annotated[str, Query(description="OpenShift project/namespace name", min_length=1, max_length=200)],
+    time_scope_units: Annotated[str, Query(description="Time scope unit")] = "month",
+    time_scope_value: Annotated[int, Query(description="Periods to look back", le=0, ge=-12)] = -1,
+    start_date: Annotated[str | None, Query(description="Custom start date (YYYY-MM-DD)")] = None,
+    end_date: Annotated[str | None, Query(description="Custom end date (YYYY-MM-DD)")] = None,
+    api_client: Annotated[CostAPIClient, Depends(get_api_client)] = None
+) -> ProjectResourcesResponse:
+    """
+    Get CPU, memory, and PVC resource metrics for a specific project.
+
+    Makes 3 concurrent upstream calls (compute, memory, volumes) and returns
+    aggregated totals. Any resource type that fails returns null values rather
+    than failing the whole response — the frontend handles missing data gracefully.
+    """
+    logger.info(f"Fetching resource metrics for project='{project_name}'")
+
+    metrics = await api_client.get_project_resource_metrics(
+        project_name=project_name,
+        time_scope_units=time_scope_units,
+        time_scope_value=time_scope_value,
+        start_date=start_date,
+        end_date=end_date
+    )
+
+    logger.info(f"Resource metrics fetched for project='{project_name}'")
+
+    return ProjectResourcesResponse(
+        project_name=project_name,
+        cpu=ResourceMetric(**metrics["cpu"]),
+        memory=ResourceMetric(**metrics["memory"]),
+        storage=ResourceMetric(**metrics["storage"]),
     )
 
 

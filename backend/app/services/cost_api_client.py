@@ -245,6 +245,73 @@ class CostAPIClient:
 
         return await self._request(endpoint, params)
 
+    async def get_project_resource_metrics(
+        self,
+        project_name: str,
+        time_scope_units: str = "month",
+        time_scope_value: int = -1,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None
+    ) -> dict:
+        """
+        Get CPU, memory, and PVC resource metrics for a specific project.
+
+        Makes 3 concurrent calls to compute/, memory/, and volumes/ endpoints,
+        each filtered to the given project via group_by[project]=PROJECT_NAME.
+        Extracts aggregated totals from meta.total (covers the full time period
+        regardless of resolution, so no per-day iteration needed).
+
+        If any resource endpoint fails, that metric is returned as empty
+        (all None values) rather than failing the entire request.
+
+        Reference endpoints:
+        - GET /reports/openshift/compute/?group_by[project]=NAME
+        - GET /reports/openshift/memory/?group_by[project]=NAME
+        - GET /reports/openshift/volumes/?group_by[project]=NAME
+
+        Returns:
+            Dict with keys "cpu", "memory", "storage", each containing
+            usage/units/request/limit/capacity from meta.total.
+        """
+        time_params = self._build_time_filters(
+            time_scope_units, time_scope_value, start_date, end_date
+        )
+        params = {"group_by[project]": project_name, **time_params}
+
+        async def fetch(resource_type: str) -> dict:
+            try:
+                return await self._request(
+                    f"/reports/openshift/{resource_type}/", params
+                )
+            except Exception as e:
+                logger.warning(
+                    "Resource metrics fetch failed [%s / %s]: %s",
+                    resource_type, project_name, e
+                )
+                return {}
+
+        def extract(response: dict) -> dict:
+            total = response.get("meta", {}).get("total", {})
+            return {
+                "usage":    total.get("usage", {}).get("value"),
+                "units":    total.get("usage", {}).get("units"),
+                "request":  total.get("request", {}).get("value"),
+                "limit":    total.get("limit", {}).get("value"),
+                "capacity": total.get("capacity", {}).get("value"),
+            }
+
+        cpu_raw, mem_raw, vol_raw = await asyncio.gather(
+            fetch("compute"),
+            fetch("memory"),
+            fetch("volumes"),
+        )
+
+        return {
+            "cpu":     extract(cpu_raw),
+            "memory":  extract(mem_raw),
+            "storage": extract(vol_raw),
+        }
+
     async def get_resource_details(
         self,
         resource_type: str,

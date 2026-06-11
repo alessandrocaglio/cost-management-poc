@@ -17,6 +17,8 @@ from app.models.responses import (
     TagKeysResponse,
     ProjectCost,
     ProjectDetailResponse,
+    ResourceMetric,
+    ProjectResourcesResponse,
     HealthResponse,
     ErrorResponse,
 )
@@ -33,6 +35,8 @@ __all__ = [
     "TagKeysResponse",
     "ProjectCost",
     "ProjectDetailResponse",
+    "ResourceMetric",
+    "ProjectResourcesResponse",
     "HealthResponse",
     "ErrorResponse",
 ]

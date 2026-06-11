@@ -207,12 +207,18 @@ class ProjectCost(BaseModel):
         ge=0
     )
 
+    cluster: Optional[str] = Field(
+        None,
+        description="Cluster name(s) where this project runs (comma-separated if multiple)"
+    )
+
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
                 "project_name": "cost-management-prod",
                 "cost": 350.75,
-                "usage": 125.5
+                "usage": 125.5,
+                "cluster": "my-cluster"
             }
         }
     )
@@ -268,6 +274,58 @@ class ProjectDetailResponse(BaseModel):
                 "tag_value": "TeamA",
                 "total_cost": 1500.00,
                 "project_count": 3
+            }
+        }
+    )
+
+
+class ResourceMetric(BaseModel):
+    """
+    Aggregated usage/request/limit metrics for a single resource type.
+
+    Sourced from meta.total of the compute, memory, or volumes endpoint.
+    Limit is absent for storage (volumes API does not return it).
+    """
+
+    usage: Optional[float] = Field(None, description="Total resource usage for the period", ge=0)
+    units: Optional[str] = Field(None, description="Units for all metrics (e.g. Core-Hours, GiB-Hours, GiB-Mo)")
+    request: Optional[float] = Field(None, description="Total resource requested", ge=0)
+    limit: Optional[float] = Field(None, description="Total resource limit (absent for storage)", ge=0)
+    capacity: Optional[float] = Field(None, description="Total cluster capacity for this resource", ge=0)
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "usage": 30.79,
+                "units": "Core-Hours",
+                "request": 12527.67,
+                "limit": 14703.53,
+                "capacity": 2350400.33
+            }
+        }
+    )
+
+
+class ProjectResourcesResponse(BaseModel):
+    """
+    CPU, memory, and storage resource metrics for a single project.
+
+    All three resource types are fetched concurrently from the respective
+    OpenShift resource endpoints and aggregated via meta.total.
+    """
+
+    project_name: str = Field(..., description="OpenShift project/namespace name")
+    cpu: ResourceMetric = Field(..., description="CPU (compute) metrics in Core-Hours")
+    memory: ResourceMetric = Field(..., description="Memory metrics in GiB-Hours")
+    storage: ResourceMetric = Field(..., description="Persistent volume metrics in GiB-Mo")
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "project_name": "caching",
+                "cpu": {"usage": 30.79, "units": "Core-Hours", "request": 12527.67, "limit": 14703.53, "capacity": 2350400.33},
+                "memory": {"usage": 9266.67, "units": "GiB-Hours", "request": 12957.70, "limit": 24994.25, "capacity": 9343394.70},
+                "storage": {"usage": 70.24, "units": "GiB-Mo", "request": 6805.19, "limit": None, "capacity": 6841.85}
             }
         }
     )
